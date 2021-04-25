@@ -1,14 +1,63 @@
-import 'package:d15cu55/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:d15cu55/presentation/bloc/auth/auth_cubit.dart';
 
-void main() => runApp(MyApp());
+import 'presentation/bloc/communication/communication_cubit.dart';
+import 'presentation/bloc/login/login_cubit.dart';
+import 'presentation/bloc/user/user_cubit.dart';
+import 'presentation/screens/home_screen.dart';
+import 'injection_container.dart' as di;
+import 'presentation/screens/welcome_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await di.init();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'D15CU55',
-      home: HomeScreen(),
+
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (_) => di.sl<AuthCubit>()..appStarted(),
+        ),
+        BlocProvider<LoginCubit>(
+          create: (_) => di.sl<LoginCubit>(),
+        ),
+        BlocProvider<UserCubit>(
+          create: (_) => di.sl<UserCubit>(),
+        ),
+        BlocProvider<CommunicationCubit>(
+          create: (_) => di.sl<CommunicationCubit>(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'D15CU55',
+        debugShowCheckedModeBanner: false,
+        routes: {
+          "/" : (context){
+            return BlocBuilder<AuthCubit,AuthState>(
+              builder: (context,authState){
+                if (authState is Authenticated){
+                  return WelcomeScreen(uid:authState.uid);
+                }
+                if (authState is UnAuthenticated){
+                  return HomeScreen();
+                }
+                return Container();
+              },
+            );
+          }
+        },
+      ),
     );
   }
 }
