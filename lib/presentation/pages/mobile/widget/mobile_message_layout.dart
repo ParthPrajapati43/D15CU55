@@ -1,7 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 
-
 class MobileMessageLayout extends StatelessWidget {
   final String uid;
   final String type;
@@ -40,15 +39,18 @@ class MobileMessageLayout extends StatelessWidget {
           mainAxisAlignment: boxMainAxisAlignment,
           children: [
             color == Colors.blue
-                ?Container(
-              height: 35,
-              width: 35,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black,width: 2),
-                  borderRadius: BorderRadius.all(Radius.circular(55))
-              ),
-              child: Image.asset("assets/profile_default.png"),
-            ):Text("",style: TextStyle(fontSize: 0),),
+                ? Container(
+                    height: 35,
+                    width: 35,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 2),
+                        borderRadius: BorderRadius.all(Radius.circular(55))),
+                    child: Image.asset("assets/profile_default.png"),
+                  )
+                : Text(
+                    "",
+                    style: TextStyle(fontSize: 0),
+                  ),
             Container(
               padding: EdgeInsets.all(8),
               margin: EdgeInsets.all(3),
@@ -60,23 +62,21 @@ class MobileMessageLayout extends StatelessWidget {
                   children: [
                     color == Colors.green[300]
                         ? Text(
-                      "Me",
-                      textAlign: align,
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    )
+                            "Me",
+                            textAlign: align,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          )
                         : Text(
-                      senderName,
-                      textAlign: align,
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
+                            senderName,
+                            textAlign: align,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
                     ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxWidth: 250
-                      ),
+                      constraints: BoxConstraints(maxWidth: 225),
                       child: Text(
-                        text==""?"":text,
+                        text == "" ? "" : text,
                         textAlign: align,
                         style: TextStyle(fontSize: 18),
                       ),
@@ -96,4 +96,3 @@ class MobileMessageLayout extends StatelessWidget {
     );
   }
 }
-

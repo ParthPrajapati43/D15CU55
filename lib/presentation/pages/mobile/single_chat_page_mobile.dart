@@ -13,7 +13,8 @@ class SingleChatPageMobile extends StatefulWidget {
   final String uid;
   final String userName;
 
-  const SingleChatPageMobile({Key key, this.uid, this.userName}) : super(key: key);
+  const SingleChatPageMobile({Key key, this.uid, this.userName})
+      : super(key: key);
 
   @override
   _SingleChatPageMobileState createState() => _SingleChatPageMobileState();
@@ -21,7 +22,7 @@ class SingleChatPageMobile extends StatefulWidget {
 
 class _SingleChatPageMobileState extends State<SingleChatPageMobile> {
   TextEditingController _messageController = TextEditingController();
-  ScrollController _scrollController=ScrollController();
+  ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     BlocProvider.of<CommunicationCubit>(context).getTextMessages();
@@ -30,15 +31,16 @@ class _SingleChatPageMobileState extends State<SingleChatPageMobile> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommunicationCubit,CommunicationState>(
-      builder: (context,state){
-        if (state is CommunicationLoaded){
+    return BlocBuilder<CommunicationCubit, CommunicationState>(
+      builder: (context, state) {
+        if (state is CommunicationLoaded) {
           return _bodyWidget(state);
         }
         return _loadingWidget();
       },
     );
   }
+
   Widget _bodyWidget(CommunicationLoaded messages) {
     return Scaffold(
       body: Stack(
@@ -60,7 +62,8 @@ class _SingleChatPageMobileState extends State<SingleChatPageMobile> {
       ),
     );
   }
-  Widget _loadingWidget(){
+
+  Widget _loadingWidget() {
     return Scaffold(
       body: Stack(
         children: [
@@ -73,7 +76,10 @@ class _SingleChatPageMobileState extends State<SingleChatPageMobile> {
           Column(
             children: [
               _headerWidget(),
-              Expanded(child: Center(child: CircularProgressIndicator(),)),
+              Expanded(
+                  child: Center(
+                child: CircularProgressIndicator(),
+              )),
               _sendTextMessageWidget(),
             ],
           ),
@@ -81,18 +87,19 @@ class _SingleChatPageMobileState extends State<SingleChatPageMobile> {
       ),
     );
   }
+
   Widget _headerWidget() {
     return Container(
-      padding: EdgeInsets.only(left: 15,right: 15,top: 20),
+      padding: EdgeInsets.only(left: 15, right: 15, top: 20),
       height: 70,
       width: double.infinity,
       decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Colors.indigo[400],
-              Colors.blue[300],
-            ],
-          )),
+        colors: [
+          Colors.indigo[400],
+          Colors.blue[300],
+        ],
+      )),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -112,7 +119,7 @@ class _SingleChatPageMobileState extends State<SingleChatPageMobile> {
           Text(
             "${widget.userName}",
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 15,
               color: Colors.white,
             ),
           )
@@ -124,7 +131,7 @@ class _SingleChatPageMobileState extends State<SingleChatPageMobile> {
   Widget _listMessagesWidget(CommunicationLoaded messages) {
     Timer(
         Duration(milliseconds: 100),
-            () => _scrollController
+        () => _scrollController
             .jumpTo(_scrollController.position.maxScrollExtent));
     return Expanded(
       child: Container(
@@ -134,35 +141,33 @@ class _SingleChatPageMobileState extends State<SingleChatPageMobile> {
           shrinkWrap: true,
           itemCount: messages.messages.length,
           itemBuilder: (_, index) {
-            return messages.messages[index].senderId ==
-                widget.uid
+            return messages.messages[index].senderId == widget.uid
                 ? MobileMessageLayout(
-              type: messages.messages[index].type,
-              senderId: messages.messages[index].senderId,
-              senderName:
-              messages.messages[index].senderName,
-              text: messages.messages[index].message,
-              time: DateFormat('hh:mm a').format(
-                  messages.messages[index].time.toDate()),
-              color: Colors.green[300],
-              align: TextAlign.left,
-              nip: BubbleNip.rightTop,
-              boxAlignment: CrossAxisAlignment.end,
-              boxMainAxisAlignment: MainAxisAlignment.end,
-              uid: widget.uid,)
+                    type: messages.messages[index].type,
+                    senderId: messages.messages[index].senderId,
+                    senderName: messages.messages[index].senderName,
+                    text: messages.messages[index].message,
+                    time: DateFormat('hh:mm a')
+                        .format(messages.messages[index].time.toDate()),
+                    color: Colors.green[300],
+                    align: TextAlign.left,
+                    nip: BubbleNip.rightTop,
+                    boxAlignment: CrossAxisAlignment.end,
+                    boxMainAxisAlignment: MainAxisAlignment.end,
+                    uid: widget.uid,
+                  )
                 : MobileMessageLayout(
-              type: messages.messages[index].type,
-              senderName:
-              messages.messages[index].senderName,
-              text: messages.messages[index].message,
-              time: DateFormat('hh:mm a').format(
-                  messages.messages[index].time.toDate()),
-              color: Colors.blue,
-              align: TextAlign.left,
-              nip: BubbleNip.leftTop,
-              boxAlignment: CrossAxisAlignment.start,
-              boxMainAxisAlignment: MainAxisAlignment.start,
-            );
+                    type: messages.messages[index].type,
+                    senderName: messages.messages[index].senderName,
+                    text: messages.messages[index].message,
+                    time: DateFormat('hh:mm a')
+                        .format(messages.messages[index].time.toDate()),
+                    color: Colors.blue,
+                    align: TextAlign.left,
+                    nip: BubbleNip.leftTop,
+                    boxAlignment: CrossAxisAlignment.start,
+                    boxMainAxisAlignment: MainAxisAlignment.start,
+                  );
           },
         ),
       ),

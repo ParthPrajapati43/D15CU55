@@ -87,9 +87,9 @@ class LeftSideWidget extends StatelessWidget {
           Container(
             width: sizingInformation.screenSize.width * 0.45,
             child: Text(
-              "D15CU55 is a platform where you can join with us in order to expore youself with some of the talented people across the globe and discuss your ideas, get suggestions and support and learn to grow.",
+              "Discuss, Explore, Grow.",
               textAlign: TextAlign.start,
-              style: TextStyle(color: Colors.white60, fontSize: 16),
+              style: TextStyle(color: Colors.white60, fontSize: 22),
             ),
           ),
           SizedBox(

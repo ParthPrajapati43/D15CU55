@@ -5,6 +5,7 @@ import 'package:d15cu55/presentation/bloc/auth/auth_cubit.dart';
 import 'package:d15cu55/presentation/bloc/login/login_cubit.dart';
 import 'package:lottie/lottie.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class BodyWidgetMobile extends StatefulWidget {
   final SizingInformation sizingInformation;
@@ -19,6 +20,8 @@ class _BodyWidgetMobileState extends State<BodyWidgetMobile> {
   TextEditingController _nameController;
   TextEditingController _emailController;
   TextEditingController _passwordController;
+  bool _isLoggedIn = false;
+  Map _userObj = {};
 
   bool isLoginPage = true;
 
@@ -73,9 +76,9 @@ class _BodyWidgetMobileState extends State<BodyWidgetMobile> {
                   fontWeight: FontWeight.bold),
             ),
             Text(
-              "D15CU55 is a platform where you can join with us in order to expore youself with some of the talented people across the globe and discuss your ideas, get suggestions and support and learn to grow.",
+              "Discuss, Explore, Grow.",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black54, fontSize: 16),
+              style: TextStyle(color: Colors.black54, fontSize: 20),
             ),
             SizedBox(
               height: 15,
@@ -89,6 +92,10 @@ class _BodyWidgetMobileState extends State<BodyWidgetMobile> {
               height: 15,
             ),
             _buttonWidget(),
+            SizedBox(
+              height: 15,
+            ),
+            _fbbuttonWidget(),
             SizedBox(
               height: 40,
             ),
@@ -120,9 +127,9 @@ class _BodyWidgetMobileState extends State<BodyWidgetMobile> {
                   fontWeight: FontWeight.bold),
             ),
             Text(
-              "D15CU55 is a platform where you can join with us in order to expore youself with some of the talented people across the globe and discuss your ideas, get suggestions and support and learn to grow.",
+              "Discuss, Explore, Grow.",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black54, fontSize: 16),
+              style: TextStyle(color: Colors.black54, fontSize: 20),
             ),
             SizedBox(
               height: 15,
@@ -136,6 +143,10 @@ class _BodyWidgetMobileState extends State<BodyWidgetMobile> {
               height: 15,
             ),
             _buttonWidget(),
+            SizedBox(
+              height: 15,
+            ),
+            _fbbuttonWidget(),
             SizedBox(
               height: 40,
             ),
@@ -250,6 +261,64 @@ class _BodyWidgetMobileState extends State<BodyWidgetMobile> {
         child: Text(
           isLoginPage == true ? "LOGIN" : "REGISTER",
           style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _fbbuttonWidget() {
+    return InkWell(
+      onTap: () async {
+        FacebookAuth.instance
+            .login(permissions: ["public_profile", "email"]).then((value) {
+          FacebookAuth.instance.getUserData().then((userData) {
+            setState(() {
+              _isLoggedIn = true;
+              _userObj = userData;
+            });
+          }).then((value) {
+            if (isLoginPage == true) {
+              BlocProvider.of<LoginCubit>(context).submitLogin(
+                email: _userObj["email"],
+                password: "12345678",
+              );
+            } else {
+              BlocProvider.of<LoginCubit>(context).submitRegistration(
+                email: _userObj["email"],
+                password: "12345678",
+                name: _userObj["name"],
+              );
+              BlocProvider.of<LoginCubit>(context).submitLogin(
+                email: _userObj["email"],
+                password: "12345678",
+              );
+            }
+          });
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        width: widget.sizingInformation.screenSize.width,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(vertical: 14),
+        decoration: BoxDecoration(
+          color: Colors.indigo,
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.facebook_outlined,
+              color: Colors.white,
+            ),
+            Text(
+              isLoginPage == true
+                  ? " LOGIN WITH FACEBOOK"
+                  : " REGISTER WITH FACEBOOK",
+              style: TextStyle(fontSize: 18, color: Colors.white),
+            ),
+          ],
         ),
       ),
     );
