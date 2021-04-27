@@ -1,10 +1,20 @@
-# d15cu55
+# D15CU55
 
-A new Flutter project.
+A Group Chat Application made with Flutter.
+
+### Task
+
+Develop a Flutter app where users can register & login with their email or login with their Facebook profile. Once they have logged in the users enter a group chat where they can chat with other registered users. You will be using Firebase Cloud Firestore to store and retrieve chat data on the fly.
 
 ## Working Video
 
 Link: https://drive.google.com/file/d/1_VFMaBOHamh7psRHQ8tX5qeZU98yfvOH/view?usp=sharing
+
+## Features
+
+1. Responsive Application for all Desktop, tablet and Mobile Views.
+2. Authentication with Email and Facebook.
+3. Global Chat Room to chat with other registered users.
 
 ## Getting Started
 
