@@ -276,10 +276,6 @@ class _RightSideWidgetState extends State<RightSideWidget> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.facebook_outlined,
-              color: Colors.white,
-            ),
             Text(
               isLoginPage == true
                   ? " LOGIN WITH FACEBOOK"
